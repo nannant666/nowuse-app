@@ -243,33 +243,44 @@
 
   function loadConfig() {
     return new Promise(function (resolve) {
-      var i = 0;
+      var settled = false;
+      var pending = SOURCES.length;
 
-      function next() {
-        if (i >= SOURCES.length) return resolve(null);
-        var src = SOURCES[i++] + '?t=' + Date.now();
-        var done = false;
+      function settle(cfg) {
+        if (settled) return;
+        if (cfg) {
+          settled = true;
+          resolve(cfg);
+          return;
+        }
+        pending -= 1;
+        if (pending <= 0) {
+          settled = true;
+          resolve(null);
+        }
+      }
+
+      // 多源并发：谁先返回用谁，避免主域名没部署时干等超时。
+      SOURCES.forEach(function (base) {
+        var finished = false;
         var script = document.createElement('script');
+        var timer = setTimeout(function () { finish(null); }, 5000);
 
-        function finish(value) {
-          if (done) return;
-          done = true;
+        function finish(cfg) {
+          if (finished) return;
+          finished = true;
           clearTimeout(timer);
           script.onload = script.onerror = null;
           if (script.parentNode) script.parentNode.removeChild(script);
-          if (value) resolve(value); else next();
+          settle(cfg);
         }
 
-        var timer = setTimeout(function () { finish(null); }, 6000);
-
         _cfg = null;
-        script.onload = function () { finish(_cfg); };
+        script.onload = function () { finish(_cfg || null); };
         script.onerror = function () { finish(null); };
-        script.src = src;
+        script.src = base + '?t=' + Date.now();
         document.head.appendChild(script);
-      }
-
-      next();
+      });
     });
   }
 

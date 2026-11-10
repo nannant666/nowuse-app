@@ -17,8 +17,8 @@ window.__NOWUSE_CONFIG__({
         'https://chat3.nowuse-ai.com/list/'
     ],
     download: {
-        android: '',
-        windows: ''
+        android: 'https://github.com/nannant666/nowuse-android/releases/download/android-v1.0.0/NowuseAI-v1.0.0.apk',
+        windows: 'https://github.com/nannant666/nowuse-app/releases/download/v1.0.0/NowuseAI_1.0.0_x64-setup.exe'
     },
     updatedAt: '2026-11-11T02:40:00+08:00'
 });
