@@ -1,0 +1,6 @@
+# 不入库
+keys/
+*.jks
+*.keystore
+node_modules/
+desktop/src-tauri/target/
