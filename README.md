@@ -14,7 +14,8 @@ App 无需重新发版。
 | `desktop/` | Windows 端（Tauri 2） |
 | `.github/workflows/windows.yml` | Windows 云端打包 |
 
-Android 端在本目录之外：`nannant666/PakePlus-Android` 仓库的 `nowuse` 分支。
+Android 端在独立仓库 `nannant666/nowuse-android`（基于 PakePlus-Android），启动页副本在
+`scripts/www/index.html`，改启动页时两边同步。
 
 ## 远程配置怎么用
 
